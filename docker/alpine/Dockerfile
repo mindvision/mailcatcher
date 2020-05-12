@@ -25,12 +25,13 @@ ARG RUBY_DEPS="sqlite-libs"
 
 WORKDIR /usr/local/src
 
-RUN apk add --update --no-cache $GEM_DEPS --virtual .gemdeps
+RUN apk add --update --no-cache $GEM_DEPS --virtual .gemdeps && \
+  apk add --update --no-cache $RUBY_DEPS
 
 COPY --from=builder /usr/local/src/mailcatcher-${VERSION}.gem ./
 
 RUN gem install mailcatcher-${VERSION}.gem && \
-  rm mailcatcher-${VERSION}.gem && \
+  rm -rf mailcatcher-${VERSION}.gem ${GEM_HOME}/cache/* && \
   apk del .gemdeps
 
 EXPOSE 1025 1080

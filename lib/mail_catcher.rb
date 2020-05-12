@@ -88,6 +88,7 @@ module MailCatcher extend self
     :http_ip => "127.0.0.1",
     :http_port => "1080",
     :http_path => "/",
+    :http_auth => false,
     :messages_limit => nil,
     :verbose => false,
     :daemon => !windows?,
@@ -131,6 +132,10 @@ module MailCatcher extend self
 
         parser.on("--messages-limit COUNT", Integer, "Only keep up to COUNT most recent messages") do |count|
           options[:messages_limit] = count
+        end
+
+        parser.on("--http-auth", "Enable http basic authentication (read env variables AUTH_USERNAME,AUTH_PASSWORD or generate random password)") do |port|
+          options[:http_auth] = true
         end
 
         parser.on("--http-path PATH", String, "Add a prefix to all HTTP paths") do |path|

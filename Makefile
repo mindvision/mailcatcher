@@ -14,7 +14,8 @@ build:
 
 push:
 	set -e; \
-	docker push ${GROUP}/${PREFIX}:latest ${GROUP}/${PREFIX}:lpine
+	docker push ${GROUP}/${PREFIX}:latest 
+	docker push ${GROUP}/${PREFIX}:alpine
 
 check: build
 

@@ -22,7 +22,7 @@ module MailCatcher
       set :asset_prefix, File.join(prefix, "assets")
       set :root, File.expand_path("#{__FILE__}/../../../..")
 
-      if true
+      if MailCatcher.options[:http_auth]
         AUTH_USERNAME = ENV.fetch('AUTH_USERNAME', 'admin')
         AUTH_PASSWORD = ENV.fetch('AUTH_PASSWORD') do
           _random_pass = [*('a'..'z'),*('0'..'9')].shuffle[0,20].join

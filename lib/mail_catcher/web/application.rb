@@ -22,6 +22,24 @@ module MailCatcher
       set :asset_prefix, File.join(prefix, "assets")
       set :root, File.expand_path("#{__FILE__}/../../../..")
 
+      if MailCatcher.options[:http_auth]
+        AUTH_USERNAME = ENV.fetch('AUTH_USERNAME', 'admin')
+        AUTH_PASSWORD = ENV.fetch('AUTH_PASSWORD') do
+          _random_pass = [*('a'..'z'),*('0'..'9')].shuffle[0,20].join
+          puts " ******************* "
+          puts " Random AUTH_PASSWORD generated: #{_random_pass} "
+          puts " ******************* "
+          _random_pass
+        end
+        use Rack::Auth::Basic, "Protected Area" do |username, password|
+          _authenticated = (username == AUTH_USERNAME && password == AUTH_PASSWORD)
+          if !_authenticated && MailCatcher.options[:verbose]
+            puts "unable to authorize: #{username} == #{AUTH_USERNAME} && #{password} == #{AUTH_PASSWORD}"
+          end
+          _authenticated
+        end
+      end
+
       if development?
         require "sprockets-helpers"
 

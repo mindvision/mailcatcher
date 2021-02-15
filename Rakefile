@@ -15,7 +15,7 @@ task "assets" do
   compiled_path = File.expand_path("../public/assets", __FILE__)
   FileUtils.mkdir_p(compiled_path)
 
-  require "mail_catcher/web/assets"
+  require "#{__dir__}/lib/mail_catcher/web/assets.rb"
   sprockets = MailCatcher::Web::Assets
   sprockets.css_compressor = :sass
   sprockets.js_compressor = :uglifier
